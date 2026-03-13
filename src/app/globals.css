@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+:root {
+  --background: 240 10% 4%;
+  --foreground: 0 0% 98%;
+  
+  --card: 240 10% 4%;
+  --card-foreground: 0 0% 98%;
+ 
+  --popover: 240 10% 4%;
+  --popover-foreground: 0 0% 98%;
+ 
+  --primary: 263.4 70% 50.4%;
+  --primary-foreground: 210 40% 98%;
+ 
+  --secondary: 240 3.7% 15.9%;
+  --secondary-foreground: 0 0% 98%;
+ 
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+ 
+  --accent: 240 3.7% 15.9%;
+  --accent-foreground: 0 0% 98%;
+ 
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --ring: 263.4 70% 50.4%;
+
+  --green-glow: 142 70% 50%;
+  --red-glow: 0 84% 60%;
+}
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    @apply antialiased;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10;
+  }
+  
+  .glow-green {
+    box-shadow: 0 0 50px -10px hsl(var(--green-glow) / 0.3);
+  }
+  
+  .glow-red {
+    box-shadow: 0 0 50px -10px hsl(var(--red-glow) / 0.5);
+  }
+
+  .text-glow-green {
+    text-shadow: 0 0 15px hsl(var(--green-glow) / 0.8);
+  }
+
+  .text-glow-red {
+    text-shadow: 0 0 15px hsl(var(--red-glow) / 0.8);
+  }
+
+  .animate-pulse-slow {
+    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: .8;
+    transform: scale(1.02);
+  }
+}

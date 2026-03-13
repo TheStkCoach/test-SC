@@ -17,6 +17,7 @@ export function SessionDisplay({ command, state, timeLeft, totalDuration }: Sess
     const isGreen = command.type === 'green';
     const isYellow = command.type === 'yellow';
     const isClimax = command.type === 'climax';
+    const isEmergency = command.type === 'emergency';
 
     const progress = totalDuration > 0 ? (timeLeft / totalDuration) * 100 : 0;
 
@@ -28,7 +29,8 @@ export function SessionDisplay({ command, state, timeLeft, totalDuration }: Sess
                 isGreen && "bg-green-500/20",
                 isRed && "bg-red-500/40 animate-pulse",
                 isYellow && "bg-yellow-500/20",
-                isClimax && "bg-purple-500/60 animate-pulse-slow"
+                isClimax && "bg-purple-500/60 animate-pulse-slow",
+                isEmergency && "bg-red-600/60 animate-[pulse_2s_infinite]"
             )} />
 
             <AnimatePresence mode="wait">
@@ -59,7 +61,8 @@ export function SessionDisplay({ command, state, timeLeft, totalDuration }: Sess
                         isRed && "text-red-500 animate-pulse",
                         isYellow && "text-yellow-400",
                         isClimax && "text-purple-500",
-                        !isGreen && !isRed && !isYellow && !isClimax && "text-white"
+                        isEmergency && "text-red-600 font-extrabold",
+                        !isGreen && !isRed && !isYellow && !isClimax && !isEmergency && "text-white"
                     )}>
                         {command.text}
                     </h1>
@@ -101,6 +104,12 @@ export function SessionDisplay({ command, state, timeLeft, totalDuration }: Sess
                             Champ Tip: {command.tip}
                         </motion.p>
                     )}
+
+                    {isEmergency && (
+                        <div className="mt-8 px-6 py-2 bg-red-600 text-white font-black rounded-full animate-bounce shadow-[0_0_30px_rgba(220,38,38,0.5)]">
+                            EMERGENCY COOLDOWN
+                        </div>
+                    )}
                 </motion.div>
             </AnimatePresence>
 
@@ -116,7 +125,7 @@ export function SessionDisplay({ command, state, timeLeft, totalDuration }: Sess
                 )} />
                 <div className={cn(
                     "w-3 h-3 rounded-full transition-all duration-500",
-                    isRed ? "bg-red-500 glow-red scale-150" : "bg-white/10"
+                    (isRed || isEmergency) ? "bg-red-500 glow-red scale-150" : "bg-white/10"
                 )} />
             </div>
         </div>

@@ -40,7 +40,13 @@ export function useSessionManager() {
         setCommand(getRandomCommand(state));
 
         if (state !== 'IDLE' && state !== 'FINISHED' && state !== 'PEAK') {
-            const interval = state === 'GREEN' ? 15000 + Math.random() * 20000 : 5000 + Math.random() * 10000;
+            let interval = state === 'GREEN' ? 15000 + Math.random() * 20000 : 5000 + Math.random() * 10000;
+            
+            // Fixed long duration for emergency cooldown
+            if (state === 'EMERGENCY_RED') {
+                interval = 60000;
+            }
+
             setTotalDuration(interval);
             setTimeLeft(interval);
 
@@ -61,6 +67,7 @@ export function useSessionManager() {
     const startSession = () => setState('PREPARING');
     const stopSession = () => setState('IDLE');
     const triggerPeak = () => setState('PEAK');
+    const triggerEmergency = () => setState('EMERGENCY_RED');
 
     return {
         state,
@@ -69,6 +76,7 @@ export function useSessionManager() {
         totalDuration,
         startSession,
         stopSession,
-        triggerPeak
+        triggerPeak,
+        triggerEmergency
     };
 }

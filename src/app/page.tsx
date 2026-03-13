@@ -4,12 +4,13 @@ import React from 'react';
 import { useSessionManager } from '@/hooks/use-session-manager';
 import { SessionDisplay } from '@/components/SessionDisplay';
 import { Button } from '@/components/ui/Button';
-import { Shield, Zap, Info, RotateCcw, AlertTriangle, X } from 'lucide-react';
+import { Shield, Zap, Info, RotateCcw, AlertTriangle, X, Octagon } from 'lucide-react';
 import { TrafficLightGuide } from '@/components/TrafficLightGuide';
 import { motion, AnimatePresence } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 export default function Home() {
-  const { state, command, timeLeft, totalDuration, startSession, stopSession, triggerPeak } = useSessionManager();
+  const { state, command, timeLeft, totalDuration, startSession, stopSession, triggerPeak, triggerEmergency } = useSessionManager();
   const [activeTooltip, setActiveTooltip] = React.useState<string | null>(null);
 
   const isIdle = state === 'IDLE';
@@ -30,13 +31,30 @@ export default function Home() {
         </div>
 
         {!isIdle && (
-          <button
-            onClick={stopSession}
-            className="flex items-center gap-2 px-4 py-2 bg-red-600/20 text-red-500 rounded-full font-bold text-sm hover:bg-red-600/30 transition-colors border border-red-500/20"
-          >
-            <Shield className="w-4 h-4" />
-            PANIC STOP
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={triggerEmergency}
+              disabled={state === 'EMERGENCY_RED'}
+              className={cn(
+                "flex items-center gap-2 px-4 py-2 bg-red-600/20 text-red-500 rounded-full font-bold text-sm hover:bg-red-600/30 transition-all border border-red-500/20 group relative",
+                state === 'EMERGENCY_RED' && "opacity-50 cursor-not-allowed grayscale"
+              )}
+            >
+              <div className="relative w-4 h-4 flex items-center justify-center">
+                <Octagon className="w-4 h-4" />
+                <Zap className="w-2 h-2 absolute mt-[-0.5px]" fill="currentColor" />
+              </div>
+              <span>EMERGENCY STOP</span>
+            </button>
+
+            <button
+              onClick={stopSession}
+              className="p-2 bg-white/5 hover:bg-white/10 text-muted-foreground hover:text-white rounded-full transition-colors border border-white/10"
+              title="End Session"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
         )}
       </header>
 

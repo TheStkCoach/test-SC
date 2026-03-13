@@ -1,10 +1,10 @@
 
-export type SessionState = 'IDLE' | 'PREPARING' | 'GREEN' | 'RED' | 'YELLOW' | 'PEAK' | 'FINISHED';
+export type SessionState = 'IDLE' | 'PREPARING' | 'GREEN' | 'RED' | 'YELLOW' | 'PEAK' | 'FINISHED' | 'EMERGENCY_RED';
 
 export type SessionCommand = {
     text: string;
     subtext?: string;
-    type: 'green' | 'red' | 'yellow' | 'climax' | 'neutral';
+    type: 'green' | 'red' | 'yellow' | 'climax' | 'neutral' | 'emergency';
     tip?: string;
 };
 
@@ -80,6 +80,12 @@ export const COMMANDS: Record<SessionState, SessionCommand[]> = {
         { text: "Put your hands up", subtext: "I want to see you twitching", type: 'red' },
         { text: "Suffer for me", subtext: "Don't you dare move those hands", type: 'red' },
         { text: "No more touching", subtext: "Just be a good, frustrated boy", type: 'red' }
+    ],
+    EMERGENCY_RED: [
+        { text: "EMERGENCY STOP!", subtext: "HANDS OFF! Recover your control.", type: 'emergency' },
+        { text: "Breathe...", subtext: "You almost lost it. Calm down now.", type: 'emergency' },
+        { text: "Wait for it...", subtext: "The coach says you're not ready to cum.", type: 'emergency' },
+        { text: "Total Cooldown", subtext: "Let the energy settle. Don't move.", type: 'emergency' }
     ],
     PEAK: [
         { text: "RELEASE", subtext: "Give it all to me now!", type: 'climax' },

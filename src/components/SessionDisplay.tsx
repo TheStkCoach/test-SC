@@ -40,6 +40,19 @@ export function SessionDisplay({ command, state, timeLeft, totalDuration }: Sess
                     transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
                     className="relative z-10 text-center"
                 >
+                    {/* Numeric Countdown Overlay */}
+                    <div className="absolute inset-0 flex items-center justify-center -z-10 pointer-events-none select-none">
+                        <motion.span
+                            key={Math.floor(timeLeft / 1000)}
+                            initial={{ opacity: 0, scale: 0.5 }}
+                            animate={{ opacity: 0.1, scale: 1.5 }}
+                            exit={{ opacity: 0 }}
+                            className="text-[15rem] font-black text-white tabular-nums"
+                        >
+                            {Math.max(0, Math.ceil(timeLeft / 1000))}
+                        </motion.span>
+                    </div>
+
                     <h1 className={cn(
                         "text-7xl md:text-9xl font-black uppercase tracking-tighter mb-6 transition-all duration-500",
                         isGreen && "text-green-500",

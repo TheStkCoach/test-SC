@@ -5,6 +5,7 @@ import { useSessionManager } from '@/hooks/use-session-manager';
 import { SessionDisplay } from '@/components/SessionDisplay';
 import { Button } from '@/components/ui/Button';
 import { Shield, Zap, Info, RotateCcw, AlertTriangle } from 'lucide-react';
+import { TrafficLightGuide } from '@/components/TrafficLightGuide';
 
 export default function Home() {
   const { state, command, timeLeft, totalDuration, startSession, stopSession, triggerPeak } = useSessionManager();
@@ -52,6 +53,8 @@ export default function Home() {
                 Start Session
               </Button>
             </div>
+
+            <TrafficLightGuide />
 
             <div className="grid grid-cols-3 gap-4 pt-12">
               <div className="group relative glass p-4 rounded-2xl space-y-2 cursor-help">

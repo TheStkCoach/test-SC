@@ -42,21 +42,8 @@ export function SessionDisplay({ command, state, timeLeft, totalDuration }: Sess
                     transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
                     className="relative z-10 text-center"
                 >
-                    {/* Numeric Countdown Overlay */}
-                    <div className="absolute inset-0 flex items-center justify-center -z-10 pointer-events-none select-none">
-                        <motion.span
-                            key={Math.floor(timeLeft / 1000)}
-                            initial={{ opacity: 0, scale: 0.5 }}
-                            animate={{ opacity: 0.1, scale: 1.5 }}
-                            exit={{ opacity: 0 }}
-                            className="text-[15rem] font-black text-white tabular-nums"
-                        >
-                            {Math.max(0, Math.ceil(timeLeft / 1000))}
-                        </motion.span>
-                    </div>
-
                     <h1 className={cn(
-                        "text-7xl md:text-9xl font-black uppercase tracking-tighter mb-6 transition-all duration-500",
+                        "text-4xl md:text-6xl font-black uppercase tracking-tighter mb-4 transition-all duration-500",
                         isGreen && "text-green-500",
                         isRed && "text-red-500 animate-pulse",
                         isYellow && "text-yellow-400",
@@ -77,16 +64,18 @@ export function SessionDisplay({ command, state, timeLeft, totalDuration }: Sess
                         </motion.p>
                     )}
 
-                    {/* Progress Bar */}
+                    {/* Progress Bar — fades out as time runs down */}
                     {totalDuration > 0 && (
-                        <div className="w-64 h-1.5 bg-white/10 rounded-full overflow-hidden mx-auto">
+                        <div className="w-72 h-2 bg-white/5 rounded-full overflow-hidden mx-auto mt-2">
                             <motion.div
                                 className={cn(
-                                    "h-full transition-colors duration-500",
-                                    isGreen && "bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]",
-                                    isRed && "bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]",
-                                    isYellow && "bg-yellow-500 shadow-[0_0_10px_rgba(234,179,8,0.5)]"
+                                    "h-full rounded-full transition-colors duration-500",
+                                    isGreen && "bg-green-500 shadow-[0_0_12px_rgba(34,197,94,0.6)]",
+                                    isRed && "bg-red-500 shadow-[0_0_12px_rgba(239,68,68,0.6)]",
+                                    isYellow && "bg-yellow-400 shadow-[0_0_12px_rgba(234,179,8,0.6)]",
+                                    isEmergency && "bg-red-600 shadow-[0_0_12px_rgba(220,38,38,0.8)]"
                                 )}
+                                style={{ opacity: 0.3 + (progress / 100) * 0.7 }}
                                 initial={{ width: "100%" }}
                                 animate={{ width: `${progress}%` }}
                                 transition={{ duration: 0.1, ease: "linear" }}

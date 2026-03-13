@@ -55,7 +55,7 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-12 max-w-4xl">
-              <div className="group relative glass p-4 rounded-2xl flex items-center justify-center">
+              <div className="group relative glass p-4 rounded-2xl flex items-center justify-center hover:z-[60] focus-within:z-[60] transition-all">
                 <TrafficLightGuide />
               </div>
               <div className="group relative glass p-4 rounded-2xl space-y-2 cursor-help">

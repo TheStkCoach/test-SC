@@ -58,7 +58,7 @@ export default function Home() {
               <div className="group relative glass p-4 rounded-2xl flex items-center justify-center hover:z-[60] focus-within:z-[60] transition-all">
                 <TrafficLightGuide />
               </div>
-              <div className="group relative glass p-4 rounded-2xl space-y-2 cursor-help">
+              <div className="group relative glass p-4 rounded-2xl space-y-2 cursor-help hover:z-[60] focus-within:z-[60] transition-all">
                 <Shield className="w-5 h-5 text-primary mx-auto" />
                 <p className="text-xs font-bold uppercase text-muted-foreground">Privacy First</p>
 
@@ -71,7 +71,7 @@ export default function Home() {
                   </p>
                 </div>
               </div>
-              <div className="group relative glass p-4 rounded-2xl space-y-2 cursor-help">
+              <div className="group relative glass p-4 rounded-2xl space-y-2 cursor-help hover:z-[60] focus-within:z-[60] transition-all">
                 <Zap className="w-5 h-5 text-primary mx-auto" />
                 <p className="text-xs font-bold uppercase text-muted-foreground">AI Guided</p>
 
@@ -86,7 +86,7 @@ export default function Home() {
               </div>
 
               {/* Champ Tips with Popover */}
-              <div className="group relative glass p-4 rounded-2xl space-y-2 cursor-help">
+              <div className="group relative glass p-4 rounded-2xl space-y-2 cursor-help hover:z-[60] focus-within:z-[60] transition-all">
                 <Info className="w-5 h-5 text-primary mx-auto" />
                 <p className="text-xs font-bold uppercase text-muted-foreground">Champ Tips</p>
 

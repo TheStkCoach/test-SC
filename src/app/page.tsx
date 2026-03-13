@@ -54,9 +54,10 @@ export default function Home() {
               </Button>
             </div>
 
-            <TrafficLightGuide />
-
-            <div className="grid grid-cols-3 gap-4 pt-12">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-12 max-w-4xl">
+              <div className="group relative glass p-4 rounded-2xl flex items-center justify-center">
+                <TrafficLightGuide />
+              </div>
               <div className="group relative glass p-4 rounded-2xl space-y-2 cursor-help">
                 <Shield className="w-5 h-5 text-primary mx-auto" />
                 <p className="text-xs font-bold uppercase text-muted-foreground">Privacy First</p>

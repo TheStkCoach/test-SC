@@ -64,39 +64,47 @@ export function TrafficLightGuide() {
                 {/* Pop-up for Mobile/Desktop */}
                 <AnimatePresence>
                     {activeColor && (
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.9, y: activeColor === 'RED' ? -10 : activeColor === 'GREEN' ? 10 : 0 }}
-                            animate={{ opacity: 1, scale: 1, y: 0 }}
-                            exit={{ opacity: 0, scale: 0.9 }}
-                            className={cn(
-                                "absolute z-50 p-4 rounded-xl border backdrop-blur-xl shadow-2xl transition-all",
-                                "left-1/2 -translate-x-1/2 bottom-full mb-6 w-[240px] md:left-full md:translate-x-0 md:bottom-auto md:top-1/2 md:-translate-y-1/2 md:ml-6 md:mb-0 md:w-[280px]",
-                                GUIDE_CONTENT[activeColor].bg,
-                                GUIDE_CONTENT[activeColor].border,
-                                GUIDE_CONTENT[activeColor].glow
-                            )}
-                        >
-                            <button
+                        <>
+                            {/* Backdrop to close on click outside */}
+                            <div 
+                                className="fixed inset-0 z-40 bg-black/5" 
                                 onClick={() => setActiveColor(null)}
-                                className="absolute top-2 right-2 p-1 hover:bg-white/10 rounded-full transition-colors"
+                            />
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.9, y: activeColor === 'RED' ? -10 : activeColor === 'GREEN' ? 10 : 0 }}
+                                animate={{ opacity: 1, scale: 1, y: 0 }}
+                                exit={{ opacity: 0, scale: 0.9 }}
+                                className={cn(
+                                    "absolute z-50 p-4 rounded-xl border backdrop-blur-xl shadow-2xl transition-all",
+                                    "left-1/2 -translate-x-1/2 bottom-full mb-6 w-[240px] md:left-full md:translate-x-0 md:bottom-auto md:top-1/2 md:-translate-y-1/2 md:ml-6 md:mb-0 md:w-[280px]",
+                                    GUIDE_CONTENT[activeColor].bg,
+                                    GUIDE_CONTENT[activeColor].border,
+                                    GUIDE_CONTENT[activeColor].glow
+                                )}
+                                onClick={(e) => e.stopPropagation()}
                             >
-                                <X className="w-3.5 h-3.5 text-muted-foreground" />
-                            </button>
-                            
-                            <h4 className={cn("text-sm font-black uppercase tracking-tight mb-1", GUIDE_CONTENT[activeColor].color)}>
-                                {GUIDE_CONTENT[activeColor].title}
-                            </h4>
-                            <p className="text-xs text-white/80 leading-relaxed italic">
-                                {GUIDE_CONTENT[activeColor].description}
-                            </p>
+                                <button
+                                    onClick={() => setActiveColor(null)}
+                                    className="absolute top-2 right-2 p-1 hover:bg-white/10 rounded-full transition-colors"
+                                >
+                                    <X className="w-3.5 h-3.5 text-muted-foreground" />
+                                </button>
+                                
+                                <h4 className={cn("text-sm font-black uppercase tracking-tight mb-1", GUIDE_CONTENT[activeColor].color)}>
+                                    {GUIDE_CONTENT[activeColor].title}
+                                </h4>
+                                <p className="text-xs text-white/80 leading-relaxed italic">
+                                    {GUIDE_CONTENT[activeColor].description}
+                                </p>
 
-                            <div className={cn(
-                                "absolute w-3 h-3 border-l border-b rotate-45 md:rotate-[135deg]",
-                                "left-1/2 -translate-x-1/2 bottom-[-7px] md:left-[-7px] md:top-1/2 md:-translate-y-1/2 md:translate-x-0",
-                                GUIDE_CONTENT[activeColor].bg,
-                                GUIDE_CONTENT[activeColor].border
-                            )} />
-                        </motion.div>
+                                <div className={cn(
+                                    "absolute w-3 h-3 border-l border-b rotate-45 md:rotate-[135deg]",
+                                    "left-1/2 -translate-x-1/2 bottom-[-7px] md:left-[-7px] md:top-1/2 md:-translate-y-1/2 md:translate-x-0",
+                                    GUIDE_CONTENT[activeColor].bg,
+                                    GUIDE_CONTENT[activeColor].border
+                                )} />
+                            </motion.div>
+                        </>
                     )}
                 </AnimatePresence>
             </div>

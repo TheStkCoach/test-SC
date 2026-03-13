@@ -4,13 +4,19 @@ import React from 'react';
 import { useSessionManager } from '@/hooks/use-session-manager';
 import { SessionDisplay } from '@/components/SessionDisplay';
 import { Button } from '@/components/ui/Button';
-import { Shield, Zap, Info, RotateCcw, AlertTriangle } from 'lucide-react';
+import { Shield, Zap, Info, RotateCcw, AlertTriangle, X } from 'lucide-react';
 import { TrafficLightGuide } from '@/components/TrafficLightGuide';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Home() {
   const { state, command, timeLeft, totalDuration, startSession, stopSession, triggerPeak } = useSessionManager();
+  const [activeTooltip, setActiveTooltip] = React.useState<string | null>(null);
 
   const isIdle = state === 'IDLE';
+
+  const toggleTooltip = (id: string) => {
+    setActiveTooltip(activeTooltip === id ? null : id);
+  };
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-6 md:p-24 overflow-hidden">
@@ -20,7 +26,7 @@ export default function Home() {
           <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
             <Zap className="text-white w-5 h-5" fill="currentColor" />
           </div>
-          <span className="font-black text-xl tracking-tighter uppercase italic">Stro Coach</span>
+          <span className="font-black text-xl tracking-tighter uppercase italic">Stroke Coach</span>
         </div>
 
         {!isIdle && (
@@ -58,46 +64,101 @@ export default function Home() {
               <div className="group relative glass p-4 rounded-2xl flex items-center justify-center hover:z-[60] focus-within:z-[60] transition-all">
                 <TrafficLightGuide />
               </div>
-              <div className="group relative glass p-4 rounded-2xl space-y-2 cursor-help hover:z-[60] focus-within:z-[60] transition-all">
+              <div 
+                className="group relative glass p-4 rounded-2xl space-y-2 cursor-help hover:z-[60] focus-within:z-[60] transition-all"
+                onClick={() => toggleTooltip('privacy')}
+              >
                 <Shield className="w-5 h-5 text-primary mx-auto" />
                 <p className="text-xs font-bold uppercase text-muted-foreground">Privacy First</p>
 
                 {/* Privacy Tooltip Content */}
-                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-64 p-4 bg-neutral-900/95 backdrop-blur-xl border border-white/10 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none scale-90 group-hover:scale-100 z-50 shadow-2xl">
-                  <div className="absolute bottom-[-6px] left-1/2 -translate-x-1/2 w-3 h-3 bg-neutral-900 border-r border-b border-white/10 rotate-45" />
-                  <p className="text-[10px] font-black uppercase text-primary mb-2 tracking-widest">Pro Privacy</p>
-                  <p className="text-xs text-muted-foreground leading-relaxed italic text-center">
-                    Your data stays local. We don't track your sessions, and our specialized internal engine ensures your practice remains entirely private and secure.
-                  </p>
-                </div>
+                <AnimatePresence>
+                  {activeTooltip === 'privacy' && (
+                    <motion.div 
+                      initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.9, y: 10 }}
+                      className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-64 p-4 bg-neutral-900/95 backdrop-blur-xl border border-white/10 rounded-xl z-50 shadow-2xl"
+                    >
+                      <button 
+                        className="absolute top-2 right-2 p-1 hover:bg-white/10 rounded-full"
+                        onClick={(e) => { e.stopPropagation(); setActiveTooltip(null); }}
+                      >
+                        <X className="w-3 h-3 text-muted-foreground" />
+                      </button>
+                      <div className="absolute bottom-[-6px] left-1/2 -translate-x-1/2 w-3 h-3 bg-neutral-900 border-r border-b border-white/10 rotate-45" />
+                      <p className="text-[10px] font-black uppercase text-primary mb-2 tracking-widest text-center">Pro Privacy</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed italic text-center">
+                        Your data stays local. We don't track your sessions, and our specialized internal engine ensures your practice remains entirely private and secure.
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
-              <div className="group relative glass p-4 rounded-2xl space-y-2 cursor-help hover:z-[60] focus-within:z-[60] transition-all">
+
+              <div 
+                className="group relative glass p-4 rounded-2xl space-y-2 cursor-help hover:z-[60] focus-within:z-[60] transition-all"
+                onClick={() => toggleTooltip('ai')}
+              >
                 <Zap className="w-5 h-5 text-primary mx-auto" />
                 <p className="text-xs font-bold uppercase text-muted-foreground">AI Guided</p>
 
                 {/* AI Guided Tooltip Content */}
-                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-64 p-4 bg-neutral-900/95 backdrop-blur-xl border border-white/10 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none scale-90 group-hover:scale-100 z-50 shadow-2xl">
-                  <div className="absolute bottom-[-6px] left-1/2 -translate-x-1/2 w-3 h-3 bg-neutral-900 border-r border-b border-white/10 rotate-45" />
-                  <p className="text-[10px] font-black uppercase text-primary mb-2 tracking-widest">Dynamic Coaching</p>
-                  <p className="text-xs text-muted-foreground leading-relaxed italic text-center">
-                    A personalized AI-driven experience that reacts to your pace, providing authoritative instructions and dirty talk to guide you to the edge.
-                  </p>
-                </div>
+                <AnimatePresence>
+                  {activeTooltip === 'ai' && (
+                    <motion.div 
+                      initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.9, y: 10 }}
+                      className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-64 p-4 bg-neutral-900/95 backdrop-blur-xl border border-white/10 rounded-xl z-50 shadow-2xl"
+                    >
+                      <button 
+                        className="absolute top-2 right-2 p-1 hover:bg-white/10 rounded-full"
+                        onClick={(e) => { e.stopPropagation(); setActiveTooltip(null); }}
+                      >
+                        <X className="w-3 h-3 text-muted-foreground" />
+                      </button>
+                      <div className="absolute bottom-[-6px] left-1/2 -translate-x-1/2 w-3 h-3 bg-neutral-900 border-r border-b border-white/10 rotate-45" />
+                      <p className="text-[10px] font-black uppercase text-primary mb-2 tracking-widest text-center">Dynamic Coaching</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed italic text-center">
+                        A personalized AI-driven experience that reacts to your pace, providing authoritative instructions and dirty talk to guide you to the edge.
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
 
               {/* Champ Tips with Popover */}
-              <div className="group relative glass p-4 rounded-2xl space-y-2 cursor-help hover:z-[60] focus-within:z-[60] transition-all">
+              <div 
+                className="group relative glass p-4 rounded-2xl space-y-2 cursor-help hover:z-[60] focus-within:z-[60] transition-all"
+                onClick={() => toggleTooltip('tips')}
+              >
                 <Info className="w-5 h-5 text-primary mx-auto" />
                 <p className="text-xs font-bold uppercase text-muted-foreground">Champ Tips</p>
 
                 {/* Tooltip Content */}
-                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-64 p-4 bg-neutral-900/95 backdrop-blur-xl border border-white/10 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none scale-90 group-hover:scale-100 z-50 shadow-2xl">
-                  <div className="absolute bottom-[-6px] left-1/2 -translate-x-1/2 w-3 h-3 bg-neutral-900 border-r border-b border-white/10 rotate-45" />
-                  <p className="text-[10px] font-black uppercase text-primary mb-2 tracking-widest">Mastery Guide</p>
-                  <p className="text-xs text-muted-foreground leading-relaxed italic text-center">
-                    Professional techniques and psychological tricks to master your stamina, control your breathing, and push your limits in every session.
-                  </p>
-                </div>
+                <AnimatePresence>
+                  {activeTooltip === 'tips' && (
+                    <motion.div 
+                      initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.9, y: 10 }}
+                      className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-64 p-4 bg-neutral-900/95 backdrop-blur-xl border border-white/10 rounded-xl z-50 shadow-2xl"
+                    >
+                      <button 
+                        className="absolute top-2 right-2 p-1 hover:bg-white/10 rounded-full"
+                        onClick={(e) => { e.stopPropagation(); setActiveTooltip(null); }}
+                      >
+                        <X className="w-3 h-3 text-muted-foreground" />
+                      </button>
+                      <div className="absolute bottom-[-6px] left-1/2 -translate-x-1/2 w-3 h-3 bg-neutral-900 border-r border-b border-white/10 rotate-45" />
+                      <p className="text-[10px] font-black uppercase text-primary mb-2 tracking-widest text-center">Mastery Guide</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed italic text-center">
+                        Professional techniques and psychological tricks to master your stamina, control your breathing, and push your limits in every session.
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
 

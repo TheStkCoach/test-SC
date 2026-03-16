@@ -194,11 +194,7 @@ export default function Home() {
       {/* Footer / Stats */}
       {!isIdle && (
         <footer className="fixed bottom-0 left-0 right-0 p-8 glass animate-in slide-in-from-bottom-10">
-          <div className="max-w-4xl mx-auto flex justify-between items-center">
-            <div className="space-y-1">
-              <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Current Level</p>
-              <p className="text-xl font-bold uppercase">Stamina Novice</p>
-            </div>
+          <div className="max-w-4xl mx-auto flex justify-center items-center">
 
             <div className="flex gap-4">
               {(state === 'RED' || state === 'GREEN' || state === 'YELLOW') && (
@@ -218,10 +214,6 @@ export default function Home() {
               </button>
             </div>
 
-            <div className="text-right space-y-1">
-              <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Focus Score</p>
-              <p className="text-xl font-bold uppercase text-primary">85%</p>
-            </div>
           </div>
         </footer>
       )}

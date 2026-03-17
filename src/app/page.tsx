@@ -8,9 +8,10 @@ import { Shield, Zap, Info, RotateCcw, AlertTriangle, X, Octagon } from 'lucide-
 import { TrafficLightGuide } from '@/components/TrafficLightGuide';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { EndType } from '@/lib/session-types';
 
 export default function Home() {
-  const { state, command, timeLeft, totalDuration, startSession, stopSession, triggerPeak, triggerEmergency } = useSessionManager();
+  const { state, command, timeLeft, totalDuration, endType, setEndType, startSession, stopSession, triggerPeak, triggerEmergency } = useSessionManager();
   const [activeTooltip, setActiveTooltip] = React.useState<string | null>(null);
 
   const isIdle = state === 'IDLE';
@@ -36,8 +37,8 @@ export default function Home() {
               onClick={triggerEmergency}
               disabled={state === 'EMERGENCY_RED'}
               className={cn(
-                "flex items-center gap-2 px-4 py-2 bg-red-600/20 text-red-500 rounded-full font-bold text-sm hover:bg-red-600/30 transition-all border border-red-500/20 group relative",
-                state === 'EMERGENCY_RED' && "opacity-50 cursor-not-allowed grayscale"
+                "flex items-center gap-2 px-4 py-2 bg-orange-500/10 text-orange-500/80 rounded-full font-bold text-sm hover:bg-red-600/30 hover:text-red-500 hover:border-red-500/50 transition-all border border-orange-500/20 group relative",
+                state === 'EMERGENCY_RED' && "opacity-50 cursor-not-allowed grayscale bg-red-900/50 text-red-500 border-red-500"
               )}
             >
               <div className="relative w-4 h-4 flex items-center justify-center">
@@ -62,28 +63,52 @@ export default function Home() {
       <div className="flex-1 flex flex-col items-center justify-center w-full">
         {isIdle ? (
           <div className="text-center max-w-xl space-y-8 animate-in fade-in slide-in-from-bottom-5 duration-700">
-            <h2 className="text-5xl md:text-7xl font-black tracking-tighter uppercase">
-              Master Your <span className="text-primary italic">Stamina</span>
+            <h2 className="text-5xl md:text-7xl font-black tracking-tighter uppercase text-gradient drop-shadow-lg">
+              Master Your <span className="text-primary italic drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]">Stamina</span>
             </h2>
-            <p className="text-muted-foreground text-lg md:text-xl leading-relaxed">
+            <p className="text-muted-foreground text-lg md:text-xl leading-relaxed max-w-lg mx-auto">
               Experience the ultimate gamified edging trainer. Let the AI coach guide your pace,
               control your peaks, and transform your endurance.
             </p>
-            <div className="pt-4">
+            
+            <div className="pt-2">
+              <p className="text-xs font-black uppercase tracking-widest text-muted-foreground mb-4">Choose Your Ending</p>
+              <div className="flex flex-wrap justify-center gap-2 mb-8">
+                {(['full', 'ruined', 'denial'] as EndType[]).map((type) => (
+                  <button
+                    key={type}
+                    onClick={() => setEndType(type)}
+                    className={cn(
+                      "px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border",
+                      endType === type 
+                        ? (type === 'ruined' ? "bg-orange-500/20 text-orange-400 border-orange-500/50 shadow-[0_0_15px_rgba(249,115,22,0.3)]" 
+                          : type === 'denial' ? "bg-blue-500/20 text-blue-400 border-blue-500/50 shadow-[0_0_15px_rgba(59,130,246,0.3)]"
+                          : "bg-purple-500/20 text-purple-400 border-purple-500/50 shadow-[0_0_15px_rgba(168,85,247,0.3)]")
+                        : "bg-white/5 text-muted-foreground border-white/5 hover:bg-white/10 hover:text-white"
+                    )}
+                  >
+                    {type === 'full' ? 'Full Orgasm' : type === 'ruined' ? 'Ruined' : 'Denial'}
+                  </button>
+                ))}
+              </div>
+
               <Button
                 onClick={startSession}
-                className="px-12 py-8 text-2xl font-black uppercase tracking-widest rounded-2xl hover:scale-105 active:scale-95 transition-all shadow-[0_0_40px_-5px_hsl(var(--primary)/0.5)]"
+                className="px-12 py-8 text-2xl font-black uppercase tracking-widest rounded-2xl hover:scale-105 active:scale-95 transition-all btn-premium group"
               >
-                Start Session
+                <div className="flex items-center gap-3 relative z-10">
+                  <Zap className="w-6 h-6 group-hover:scale-110 transition-transform" fill="currentColor" />
+                  <span>Start Session</span>
+                </div>
               </Button>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-12 max-w-4xl">
-              <div className="group relative glass p-4 rounded-2xl flex items-center justify-center hover:z-[60] focus-within:z-[60] transition-all">
+              <div className="group relative glass glass-edge p-4 rounded-2xl flex items-center justify-center hover:z-[60] hover:-translate-y-1 focus-within:z-[60] transition-all duration-300">
                 <TrafficLightGuide />
               </div>
               <div 
-                className="group relative glass p-4 rounded-2xl space-y-2 cursor-help hover:z-[60] focus-within:z-[60] transition-all"
+                className="group relative glass glass-edge p-4 rounded-2xl space-y-2 cursor-help hover:z-[60] hover:-translate-y-1 focus-within:z-[60] transition-all duration-300"
                 onClick={() => toggleTooltip('privacy')}
               >
                 <Shield className="w-5 h-5 text-primary mx-auto" />
@@ -93,9 +118,10 @@ export default function Home() {
                 <AnimatePresence>
                   {activeTooltip === 'privacy' && (
                     <motion.div 
-                      initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                      initial={{ opacity: 0, scale: 0.9, y: 15 }}
                       animate={{ opacity: 1, scale: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.9, y: 10 }}
+                      exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 25 }}
                       className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-64 p-4 bg-neutral-900/95 backdrop-blur-xl border border-white/10 rounded-xl z-50 shadow-2xl"
                     >
                       <button 
@@ -115,7 +141,7 @@ export default function Home() {
               </div>
 
               <div 
-                className="group relative glass p-4 rounded-2xl space-y-2 cursor-help hover:z-[60] focus-within:z-[60] transition-all"
+                className="group relative glass glass-edge p-4 rounded-2xl space-y-2 cursor-help hover:z-[60] hover:-translate-y-1 focus-within:z-[60] transition-all duration-300"
                 onClick={() => toggleTooltip('ai')}
               >
                 <Zap className="w-5 h-5 text-primary mx-auto" />
@@ -125,9 +151,10 @@ export default function Home() {
                 <AnimatePresence>
                   {activeTooltip === 'ai' && (
                     <motion.div 
-                      initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                      initial={{ opacity: 0, scale: 0.9, y: 15 }}
                       animate={{ opacity: 1, scale: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.9, y: 10 }}
+                      exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 25 }}
                       className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-64 p-4 bg-neutral-900/95 backdrop-blur-xl border border-white/10 rounded-xl z-50 shadow-2xl"
                     >
                       <button 
@@ -148,7 +175,7 @@ export default function Home() {
 
               {/* Champ Tips with Popover */}
               <div 
-                className="group relative glass p-4 rounded-2xl space-y-2 cursor-help hover:z-[60] focus-within:z-[60] transition-all"
+                className="group relative glass glass-edge p-4 rounded-2xl space-y-2 cursor-help hover:z-[60] hover:-translate-y-1 focus-within:z-[60] transition-all duration-300"
                 onClick={() => toggleTooltip('tips')}
               >
                 <Info className="w-5 h-5 text-primary mx-auto" />
@@ -158,9 +185,10 @@ export default function Home() {
                 <AnimatePresence>
                   {activeTooltip === 'tips' && (
                     <motion.div 
-                      initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                      initial={{ opacity: 0, scale: 0.9, y: 15 }}
                       animate={{ opacity: 1, scale: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.9, y: 10 }}
+                      exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 25 }}
                       className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-64 p-4 bg-neutral-900/95 backdrop-blur-xl border border-white/10 rounded-xl z-50 shadow-2xl"
                     >
                       <button 
@@ -201,7 +229,12 @@ export default function Home() {
                 <Button
                   variant="outline"
                   onClick={triggerPeak}
-                  className="border-purple-500/50 text-purple-400 hover:bg-purple-500/10"
+                  className={cn(
+                    "border text-white hover:text-white glow-pulse",
+                    endType === 'ruined' ? "border-orange-500/50 text-orange-400 hover:bg-orange-500/20" 
+                    : endType === 'denial' ? "border-blue-500/50 text-blue-400 hover:bg-blue-500/20"
+                    : "border-purple-500/50 text-purple-400 hover:bg-purple-500/20"
+                  )}
                 >
                   I'm gonna cum!
                 </Button>

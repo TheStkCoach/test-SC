@@ -1,13 +1,14 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { SessionState, COMMANDS, SessionCommand, CHAMP_TIPS } from '@/lib/session-types';
+import { SessionState, COMMANDS, SessionCommand, CHAMP_TIPS, EndType } from '@/lib/session-types';
 
 export function useSessionManager() {
     const [state, setState] = useState<SessionState>('IDLE');
     const [command, setCommand] = useState<SessionCommand>(COMMANDS.IDLE[0]);
     const [timeLeft, setTimeLeft] = useState(0);
     const [totalDuration, setTotalDuration] = useState(0);
+    const [endType, setEndType] = useState<EndType>('full');
 
     const getRandomCommand = useCallback((s: SessionState) => {
         const sessionCommands = COMMANDS[s];
@@ -31,6 +32,9 @@ export function useSessionManager() {
                 case 'GREEN': return Math.random() > 0.7 ? 'YELLOW' : 'RED';
                 case 'YELLOW': return 'RED';
                 case 'RED': return 'GREEN';
+                case 'PEAK_FULL': return 'FINISHED_FULL';
+                case 'PEAK_RUINED': return 'FINISHED_RUINED';
+                case 'PEAK_DENIED': return 'FINISHED_DENIED';
                 default: return 'IDLE';
             }
         });
@@ -39,7 +43,7 @@ export function useSessionManager() {
     useEffect(() => {
         setCommand(getRandomCommand(state));
 
-        if (state !== 'IDLE' && state !== 'FINISHED' && state !== 'PEAK') {
+        if (state !== 'IDLE' && !state.startsWith('FINISHED') && !state.startsWith('PEAK')) {
             let interval = state === 'GREEN' ? 15000 + Math.random() * 20000 : 5000 + Math.random() * 10000;
             
             // Fixed long duration for emergency cooldown
@@ -66,7 +70,13 @@ export function useSessionManager() {
 
     const startSession = () => setState('PREPARING');
     const stopSession = () => setState('IDLE');
-    const triggerPeak = () => setState('PEAK');
+    
+    const triggerPeak = () => {
+        if (endType === 'ruined') setState('PEAK_RUINED');
+        else if (endType === 'denial') setState('PEAK_DENIED');
+        else setState('PEAK_FULL');
+    };
+    
     const triggerEmergency = () => setState('EMERGENCY_RED');
 
     return {
@@ -74,6 +84,8 @@ export function useSessionManager() {
         command,
         timeLeft,
         totalDuration,
+        endType,
+        setEndType,
         startSession,
         stopSession,
         triggerPeak,

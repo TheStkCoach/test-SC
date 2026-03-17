@@ -71,9 +71,10 @@ export function TrafficLightGuide() {
                                 onClick={() => setActiveColor(null)}
                             />
                             <motion.div
-                                initial={{ opacity: 0, scale: 0.9, y: activeColor === 'RED' ? -10 : activeColor === 'GREEN' ? 10 : 0 }}
+                                initial={{ opacity: 0, scale: 0.9, y: activeColor === 'RED' ? -15 : activeColor === 'GREEN' ? 15 : 0 }}
                                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                                exit={{ opacity: 0, scale: 0.9 }}
+                                exit={{ opacity: 0, scale: 0.95, y: activeColor === 'RED' ? -10 : activeColor === 'GREEN' ? 10 : 0 }}
+                                transition={{ type: "spring", stiffness: 500, damping: 30 }}
                                 className={cn(
                                     "absolute z-50 p-4 rounded-xl border backdrop-blur-xl shadow-2xl transition-all",
                                     "left-1/2 -translate-x-1/2 bottom-full mb-6 w-[240px] md:left-full md:translate-x-0 md:bottom-auto md:top-1/2 md:-translate-y-1/2 md:ml-6 md:mb-0 md:w-[280px]",

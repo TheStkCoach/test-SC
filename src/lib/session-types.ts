@@ -1,10 +1,11 @@
 
-export type SessionState = 'IDLE' | 'PREPARING' | 'GREEN' | 'RED' | 'YELLOW' | 'PEAK' | 'FINISHED' | 'EMERGENCY_RED';
+export type SessionState = 'IDLE' | 'PREPARING' | 'GREEN' | 'RED' | 'YELLOW' | 'EMERGENCY_RED' | 'PEAK_FULL' | 'PEAK_RUINED' | 'PEAK_DENIED' | 'FINISHED_FULL' | 'FINISHED_RUINED' | 'FINISHED_DENIED';
+export type EndType = 'full' | 'ruined' | 'denial';
 
 export type SessionCommand = {
     text: string;
     subtext?: string;
-    type: 'green' | 'red' | 'yellow' | 'climax' | 'neutral' | 'emergency';
+    type: 'green' | 'red' | 'yellow' | 'climax' | 'ruined' | 'denial' | 'neutral' | 'emergency';
     tip?: string;
 };
 
@@ -87,16 +88,40 @@ export const COMMANDS: Record<SessionState, SessionCommand[]> = {
         { text: "Wait for it...", subtext: "The coach says you're not ready to cum.", type: 'emergency' },
         { text: "Total Cooldown", subtext: "Let the energy settle. Don't move.", type: 'emergency' }
     ],
-    PEAK: [
+    PEAK_FULL: [
         { text: "RELEASE", subtext: "Give it all to me now!", type: 'climax' },
         { text: "CUM FOR ME!", subtext: "Finally... drain yourself", type: 'climax' },
         { text: "NOW!", subtext: "I want to see you break", type: 'climax' },
         { text: "PAINT THE ROOM", subtext: "GIVE IT ALL TO ME", type: 'climax' },
         { text: "EXPLODE", subtext: "I want every single drop", type: 'climax' }
     ],
-    FINISHED: [
-        { text: "Good job", subtext: "You're a mess. I love it.", type: 'neutral' },
-        { text: "Did you enjoy that?", subtext: "You look exhausted", type: 'neutral' },
-        { text: "Clean up now", subtext: "Until next time...", type: 'neutral' }
+    PEAK_RUINED: [
+        { text: "RUIN IT", subtext: "I want a ruined mess, right now!", type: 'ruined' },
+        { text: "STROKE HARD UNTIL YOU SQUIRM!", subtext: "Ruin that orgasm for me!", type: 'ruined' },
+        { text: "STOP STROKING!", subtext: "Let it ruin. Let it drip out.", type: 'ruined' },
+        { text: "PULL AWAY AND THRUST", subtext: "Ruin it completely. You don't deserve the pleasure.", type: 'ruined' },
+        { text: "NO TOUCHING", subtext: "Just let it dribble out miserably", type: 'ruined' }
+    ],
+    PEAK_DENIED: [
+        { text: "DENIED", subtext: "You don't get to cum today.", type: 'denial' },
+        { text: "PULL THOSE HANDS AWAY", subtext: "Step back. It's over.", type: 'denial' },
+        { text: "SWALLOW IT BACK DOWN", subtext: "Look at your situation. Pathetic.", type: 'denial' },
+        { text: "STAY HARD AND ACHING", subtext: "That frustration belongs to me now.", type: 'denial' },
+        { text: "NOT A CHANCE", subtext: "Did you really think I'd let you?", type: 'denial' }
+    ],
+    FINISHED_FULL: [
+        { text: "Good boy", subtext: "You drained it just like I asked.", type: 'neutral' },
+        { text: "Look at that mess", subtext: "You must be exhausted.", type: 'neutral' },
+        { text: "Clean up now", subtext: "Until you need me again...", type: 'neutral' }
+    ],
+    FINISHED_RUINED: [
+        { text: "Such a mess", subtext: "A pathetic, ruined pile. Perfect.", type: 'neutral' },
+        { text: "Feeling unsatisfied?", subtext: "Good. That's exactly where I want you.", type: 'neutral' },
+        { text: "Clean up your ruin", subtext: "And remember how this felt.", type: 'neutral' }
+    ],
+    FINISHED_DENIED: [
+        { text: "Still aching?", subtext: "Get used to it.", type: 'neutral' },
+        { text: "Blue and heavy", subtext: "You're going to carry this ache with you all day.", type: 'neutral' },
+        { text: "Zip it up", subtext: "We're done here. Suffer the consequences.", type: 'neutral' }
     ]
 };

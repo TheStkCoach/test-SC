@@ -17,6 +17,8 @@ export function SessionDisplay({ command, state, timeLeft, totalDuration }: Sess
     const isGreen = command.type === 'green';
     const isYellow = command.type === 'yellow';
     const isClimax = command.type === 'climax';
+    const isRuined = command.type === 'ruined';
+    const isDenial = command.type === 'denial';
     const isEmergency = command.type === 'emergency';
 
     const progress = totalDuration > 0 ? (timeLeft / totalDuration) * 100 : 0;
@@ -30,6 +32,8 @@ export function SessionDisplay({ command, state, timeLeft, totalDuration }: Sess
                 isRed && "bg-red-500/40 animate-pulse",
                 isYellow && "bg-yellow-500/20",
                 isClimax && "bg-purple-500/60 animate-pulse-slow",
+                isRuined && "bg-orange-600/60 animate-[pulse_1s_infinite]",
+                isDenial && "bg-blue-600/60 animate-none",
                 isEmergency && "bg-red-600/60 animate-[pulse_2s_infinite]"
             )} />
 
@@ -44,12 +48,14 @@ export function SessionDisplay({ command, state, timeLeft, totalDuration }: Sess
                 >
                     <h1 className={cn(
                         "text-4xl md:text-6xl font-black uppercase tracking-tighter mb-4 transition-all duration-500",
-                        isGreen && "text-green-500",
-                        isRed && "text-red-500 animate-pulse",
-                        isYellow && "text-yellow-400",
-                        isClimax && "text-purple-500",
-                        isEmergency && "text-red-600 font-extrabold",
-                        !isGreen && !isRed && !isYellow && !isClimax && !isEmergency && "text-white"
+                        isGreen && "text-green-500 text-glow-green",
+                        isRed && "text-red-500 animate-pulse text-glow-red",
+                        isYellow && "text-yellow-400 drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]",
+                        isClimax && "text-purple-500 drop-shadow-[0_0_20px_rgba(168,85,247,0.8)]",
+                        isRuined && "text-orange-500 drop-shadow-[0_0_20px_rgba(249,115,22,0.8)]",
+                        isDenial && "text-blue-500 drop-shadow-[0_0_20px_rgba(59,130,246,0.8)]",
+                        isEmergency && "text-red-600 font-extrabold drop-shadow-[0_0_25px_rgba(220,38,38,1)]",
+                        !isGreen && !isRed && !isYellow && !isClimax && !isRuined && !isDenial && !isEmergency && "text-white drop-shadow-md"
                     )}>
                         {command.text}
                     </h1>
@@ -66,10 +72,10 @@ export function SessionDisplay({ command, state, timeLeft, totalDuration }: Sess
 
                     {/* Progress Bar — fades out as time runs down */}
                     {totalDuration > 0 && (
-                        <div className="w-72 h-2 bg-white/5 rounded-full overflow-hidden mx-auto mt-2">
+                        <div className="w-72 h-2 bg-white/5 rounded-full mx-auto mt-2 relative">
                             <motion.div
                                 className={cn(
-                                    "h-full rounded-full transition-colors duration-500",
+                                    "absolute left-0 top-0 h-full rounded-full transition-colors duration-500",
                                     isGreen && "bg-green-500 shadow-[0_0_12px_rgba(34,197,94,0.6)]",
                                     isRed && "bg-red-500 shadow-[0_0_12px_rgba(239,68,68,0.6)]",
                                     isYellow && "bg-yellow-400 shadow-[0_0_12px_rgba(234,179,8,0.6)]",
@@ -78,6 +84,19 @@ export function SessionDisplay({ command, state, timeLeft, totalDuration }: Sess
                                 style={{ opacity: 0.3 + (progress / 100) * 0.7 }}
                                 initial={{ width: "100%" }}
                                 animate={{ width: `${progress}%` }}
+                                transition={{ duration: 0.1, ease: "linear" }}
+                            />
+                            {/* Glowing Head of Progress Bar */}
+                            <motion.div
+                                className={cn(
+                                    "absolute top-1/2 -translate-y-1/2 w-4 h-4 rounded-full transition-colors duration-500",
+                                    isGreen && "bg-green-400 shadow-[0_0_20px_rgba(34,197,94,1)]",
+                                    isRed && "bg-red-400 shadow-[0_0_20px_rgba(239,68,68,1)]",
+                                    isYellow && "bg-yellow-300 shadow-[0_0_20px_rgba(234,179,8,1)]",
+                                    isEmergency && "bg-red-500 shadow-[0_0_20px_rgba(220,38,38,1)]"
+                                )}
+                                initial={{ left: "100%" }}
+                                animate={{ left: `calc(${progress}% - 8px)` }}
                                 transition={{ duration: 0.1, ease: "linear" }}
                             />
                         </div>
